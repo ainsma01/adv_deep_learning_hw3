@@ -43,11 +43,10 @@ class BaseLLM:
         - decode the outputs with self.tokenizer.decode
 
         """
-        
-        tokens = self.tokenizer.encode(prompt, return_tensors="pt").to(self.device)
-        gen_tokens = self.model.generate(tokens)
-        return self.tokenizer.decode(gen_tokens[0])
-    
+        input_tokens = self.tokenizer.encode(prompt, return_tensors="pt").to(device)
+        output = self.model.generate(input_tokens)
+        return self.tokenizer.decode(output[0])
+
     @overload
     def batched_generate(
         self, prompts: list[str], num_return_sequences: None = None, temperature: float = 0
@@ -95,6 +94,8 @@ class BaseLLM:
         """
         from tqdm import tqdm  # Importing tqdm for progress bar
 
+        print("executing batched_generate")
+
         # Preventing OOM
         # Depending on your GPU batched generation will use a lot of memory.
         # If you run out of memory, try to reduce the micro_batch_size.
@@ -108,23 +109,29 @@ class BaseLLM:
                 for r in self.batched_generate(prompts[idx : idx + micro_batch_size], num_return_sequences, temperature)
             ]
 
-        #tokenizze and generate
+        #tokenize the prompts
         self.tokenizer.padding_side = "left"
-        input_tokens = self.tokenizer.encode(prompts, padding=True, return_tensors="pt").to(self.device)
+        input_tokens = self.tokenizer(prompts, padding=True, return_tensors="pt").to(device)
 
-        print ("input tokens shape", input_tokens.shape)
-
+        #call generate to get generated tokens
         gen_tokens = self.model.generate(
-            input_ids=input_tokens,
+            input_ids=input_tokens["input_ids"],
+            attention_mask=input_tokens["attention_mask"],
             max_new_tokens=50,
-            do_sample=True,
+            do_sample=temperature > 0,
             temperature=temperature,
-            num_return_sequences=num_return_sequences,
             eos_token_id=self.tokenizer.eos_token_id,
+            num_return_sequences=num_return_sequences or 1
         )
 
-        #decode
-        return self.tokenizer.batch_decode(gen_tokens, skip_special_tokens=True)
+        #decode the generated tokens
+        output = self.tokenizer.batch_decode(gen_tokens, skip_special_tokens=True)
+
+        if num_return_sequences is None:
+            return output
+        else:
+            return [output[i::num_return_sequences] for i in range(num_return_sequences)]
+        
 
     def answer(self, *questions) -> list[float]:
         """
