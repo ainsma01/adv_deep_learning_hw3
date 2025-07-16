@@ -8,7 +8,19 @@ class CoTModel(BaseLLM):
         better if you provide a chat template. self.tokenizer.apply_chat_template can help here
         """
 
-        raise NotImplementedError()
+        messages: list[dict[str, str]] = [
+            {"role": "system", "content": "You are mathematician that is an expert in converting units of measurement from one unit to another, be short and precise with your answers"},
+            {"role": "user", "content":  "How many feet are there in a mile?"},
+            {"role": "assistant", "content": "There are 5280 feet in a mile"},
+        ]
+
+        prompt = self.tokenizer.apply_chat_template(
+            messages,
+            add_generation_prompt=True,
+            question=question,
+        )
+
+        return prompt
 
 
 def load() -> CoTModel:
