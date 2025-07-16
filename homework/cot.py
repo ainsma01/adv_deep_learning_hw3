@@ -18,6 +18,7 @@ class CoTModel(BaseLLM):
             messages,
             add_generation_prompt=True,
             question=question,
+            tokenize=False,
         )
 
         return prompt
