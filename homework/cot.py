@@ -14,10 +14,11 @@ class CoTModel(BaseLLM):
             {"role": "assistant", "content": "There are 5280 feet in a mile"},
         ]
 
+        messages.append({"role": "user", "content":  question})
+
         prompt = self.tokenizer.apply_chat_template(
             messages,
             add_generation_prompt=True,
-            question=question,
             tokenize=False,
         )
 
