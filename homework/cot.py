@@ -15,7 +15,7 @@ class CoTModel(BaseLLM):
         messages: list[dict[str, str]] = [
             {"role": "system", "content": "You are mathematician that is an expert in unit conversions, be concise with your answer"},
             {"role": "user", "content":  "Convert 5 kilometers to meters?"},
-            {"role": "assistant", "content": "5 kilometers is 5000 meters <answer>5000</answer>"},
+            {"role": "assistant", "content": "There are 100 meters in a kilometer. so 5 kilometers 5 x 1000 = 5000 meters <answer>5000</answer>"},
             {"role": "user", "content":  question},
         ]
 
