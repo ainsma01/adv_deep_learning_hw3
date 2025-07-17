@@ -33,11 +33,11 @@ class CoTModel(BaseLLM):
             },
             {
                 "role": "user",
-                "content": "How many seconds are there in a minute"
+                "content": "How many seconds are there in a 3 minutes"
             },
             {
                 "role": "assistant",
-                "content": "There are <answer>60</answer> seconds in a minute."
+                "content": "There are 60 seconds in a minute. 3 times sixty is <answer>360</answer>"
             },
             # {
             #     "role": "user",
@@ -74,7 +74,7 @@ def test_model():
     model = CoTModel()
     benchmark_result = benchmark(model, testset, 100)
     print(f"{benchmark_result.accuracy=}  {benchmark_result.answer_rate=}")
-    # testset = ["How many feet in 20 yards?", "How many hours in a day?"]
+    # testset = ["What does 2 liter equal in millilitre terms?"]
     # model = CoTModel()
     # for t in testset:
     #     print("testing answer function")
