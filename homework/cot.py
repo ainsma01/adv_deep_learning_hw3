@@ -15,37 +15,44 @@ class CoTModel(BaseLLM):
         messages = [
             {
                 "role": "system",
-                "content": "You are a helpful and concise expert at converting units of measurement. Provide only the answer, with the final value wrapped in <answer> tags."
+                "content": (
+                    "You are an expert in unit conversions. "
+                    "only answer in the format <answer>NUMBER</answer>. "
+                    # "Always provide a short step-by-step explanation, "
+                    # "and end your response with only the final number wrapped in <answer> tags, like this: <answer>24</answer>. "
+                    # "Do not include anything after the <answer> tag. This tag is required for correct parsing."
+            )
             },
             {
                 "role": "user",
-                "content": "Convert 5 kilometers to meters."
+                "content": "Convert 2 yards to feet."
             },
             {
                 "role": "assistant",
-                "content": "5 kilometers is 5000 meters. <answer>5000</answer>"
+                "content": "<answer>6</answer>"
             },
-            {
-                "role": "user",
-                "content": "Convert 2 hours to minutes."
-            },
-            {
-                "role": "assistant",
-                "content": "2 hours is 120 minutes. <answer>120</answer>"
-            },
-            {
-                "role": "user",
-                "content": "Convert 3 feet to inches."
-            },
-            {
-                "role": "assistant",
-                "content": "3 feet is 36 inches. <answer>36</answer>"
-            },
+            # {
+            #     "role": "user",
+            #     "content": "Convert 2 yards to feet."
+            # },
+            # {
+            #     "role": "assistant",
+            #     "content": "One yard is 3 feet. Two times 3 is <answer>6</answer> feet."
+            # },
+            # {
+            #     "role": "user",
+            #     "content": "Convert 20 yards to feet."
+            # },
+            # {
+            #     "role": "assistant",
+            #     "content": "One yard is 3 feet. Twenty times 3 is <answer>60</answer> feet."
+            # },
             {
                 "role": "user",
                 "content": question
             }
         ]
+
 
 
         prompt = self.tokenizer.apply_chat_template(
@@ -67,6 +74,15 @@ def test_model():
     model = CoTModel()
     benchmark_result = benchmark(model, testset, 100)
     print(f"{benchmark_result.accuracy=}  {benchmark_result.answer_rate=}")
+    # testset = ["How many feet in 20 yards?", "How many hours in a day?"]
+    # model = CoTModel()
+    # for t in testset:
+    #     print("testing answer function")
+    #     print("input", t)
+    #     answer = model.answer(t)
+    #     #rint("output", answer)
+    #answers = model.batched_generate(testset)
+    #print(answers)
 
 if __name__ == "__main__":
     from fire import Fire
