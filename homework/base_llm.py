@@ -2,6 +2,7 @@ from typing import overload
 
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
+import re
 
 checkpoint = "HuggingFaceTB/SmolLM2-360M-Instruct"
 
@@ -28,7 +29,8 @@ class BaseLLM:
         This function is somewhat robust to output errors (e.g. missing </answer> tags).
         """
         try:
-            return float(answer.split("<answer>")[1].split("</answer>")[0])
+            matches = re.findall(r"<answer>(.*?)</answer>", answer)
+            return float(matches[-1].strip())
         except (IndexError, ValueError):
             return float("nan")
 
@@ -125,7 +127,7 @@ class BaseLLM:
         )
 
         #decode the generated tokens
-        output = self.tokenizer.batch_decode(gen_tokens, skip_special_tokens=True)
+        output = self.tokenizer.batch_decode(gen_tokens, skip_special_tokens=False)
 
         if num_return_sequences is None:
             return output

@@ -17,7 +17,7 @@ class CoTModel(BaseLLM):
                 "role": "system",
                 "content": (
                     "You are an expert in unit conversions. "
-                    "only answer in the format <answer>NUMBER</answer>. "
+                    "briefly summarize the question and then respond with the <answer>answer</answer> wrapped in <answer>NUMBER</answer>. "
                     # "Always provide a short step-by-step explanation, "
                     # "and end your response with only the final number wrapped in <answer> tags, like this: <answer>24</answer>. "
                     # "Do not include anything after the <answer> tag. This tag is required for correct parsing."
@@ -29,16 +29,16 @@ class CoTModel(BaseLLM):
             },
             {
                 "role": "assistant",
-                "content": "<answer>6</answer>"
+                "content": "There is 3 feet in a yard. Two times three is <answer>6</answer>"
             },
-            # {
-            #     "role": "user",
-            #     "content": "Convert 2 yards to feet."
-            # },
-            # {
-            #     "role": "assistant",
-            #     "content": "One yard is 3 feet. Two times 3 is <answer>6</answer> feet."
-            # },
+            {
+                "role": "user",
+                "content": "How many seconds are there in a minute"
+            },
+            {
+                "role": "assistant",
+                "content": "There are <answer>60</answer> seconds in a minute."
+            },
             # {
             #     "role": "user",
             #     "content": "Convert 20 yards to feet."
@@ -80,7 +80,7 @@ def test_model():
     #     print("testing answer function")
     #     print("input", t)
     #     answer = model.answer(t)
-    #     #rint("output", answer)
+    #     print("final output is", answer)
     #answers = model.batched_generate(testset)
     #print(answers)
 
