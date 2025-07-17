@@ -12,11 +12,39 @@ class CoTModel(BaseLLM):
         better if you provide a chat template. self.tokenizer.apply_chat_template can help here
         """
 
-        messages: list[dict[str, str]] = [
-            {"role": "system", "content": "You are mathematician that is an expert in unit conversions, be concise with your answer"},
-            {"role": "user", "content":  "Convert 5 kilometers to meters?"},
-            {"role": "assistant", "content": "There are 100 meters in a kilometer. so 5 kilometers 5 x 1000 = 5000 meters <answer>5000</answer>"},
-            {"role": "user", "content":  question},
+        messages = [
+            {
+                "role": "system",
+                "content": "You are a helpful and concise expert at converting units of measurement. Provide only the answer, with the final value wrapped in <answer> tags."
+            },
+            {
+                "role": "user",
+                "content": "Convert 5 kilometers to meters."
+            },
+            {
+                "role": "assistant",
+                "content": "5 kilometers is 5000 meters. <answer>5000</answer>"
+            },
+            {
+                "role": "user",
+                "content": "Convert 2 hours to minutes."
+            },
+            {
+                "role": "assistant",
+                "content": "2 hours is 120 minutes. <answer>120</answer>"
+            },
+            {
+                "role": "user",
+                "content": "Convert 3 feet to inches."
+            },
+            {
+                "role": "assistant",
+                "content": "3 feet is 36 inches. <answer>36</answer>"
+            },
+            {
+                "role": "user",
+                "content": question
+            }
         ]
 
 
