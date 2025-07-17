@@ -1,5 +1,6 @@
 from .base_llm import BaseLLM
 from .data import Dataset, benchmark
+from peft import LoraConfig, get_peft_model
 
 
 def load() -> BaseLLM:
@@ -49,7 +50,12 @@ def format_example(prompt: str, answer: str) -> dict[str, str]:
     """
     Construct a question / answer pair. Consider rounding the answer to make it easier for the LLM.
     """
-    raise NotImplementedError()
+    answer_float = float(answer)
+    
+    return {
+        "question": prompt,
+        "answer": f"<answer>{answer_float}</answer>",
+    }
 
 
 class TokenizedDataset:
@@ -78,8 +84,54 @@ def train_model(
     output_dir: str,
     **kwargs,
 ):
-    raise NotImplementedError()
-    test_model(output_dir)
+    #base model
+    base_llm = BaseLLM()
+
+    #create LORA
+    rank = 8
+    lora_config = LoraConfig(
+        target_modules="all-linear",
+        bias="none",
+        task_type="CAUSAL_LM",
+        r = rank,
+        lora_alpha = rank * 4
+    )
+
+    lora_model = get_peft_model(base_llm.model, lora_config)
+    lora_model.enable_input_require_grads()
+
+    #get training data
+    train_data = Dataset("train")
+    tokenized_data = TokenizedDataset(base_llm.tokenizer, train_data, format_example)
+
+    #define training args
+    from transformers import TrainingArguments
+
+    training_args = TrainingArguments(
+        gradient_checkpointing=True,
+        learning_rate=2e-4,
+        output_dir=output_dir,
+        logging_dir=output_dir,
+        report_to="tensorboard",
+        num_train_epochs=5,
+        per_device_train_batch_size=32,
+    )
+
+    #call trainer
+    from transformers import Trainer
+
+    trainer = Trainer(
+        model=lora_model,
+        args=training_args,
+        train_dataset=tokenized_data,
+    )
+
+    trainer.train()
+
+    #save model
+    trainer.save_model("homework/sft_model")
+
+    
 
 
 def test_model(ckpt_path: str):
