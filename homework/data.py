@@ -56,6 +56,7 @@ def benchmark(func: BaseLLM, dataset: Dataset, max_question: int) -> BenchmarkRe
     idx = range(min(len(dataset), max_question))
     questions = [dataset[i][0] for i in idx]
     answers = func.answer(*questions)
+    print(answers)
     return BenchmarkResult.from_answers(answers, dataset, max_question)
 
 
