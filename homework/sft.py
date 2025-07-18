@@ -109,12 +109,12 @@ def train_model(
 
     training_args = TrainingArguments(
         gradient_checkpointing=True,
-        learning_rate=2e-4,
+        learning_rate=5e-4,
         output_dir=output_dir,
         logging_dir=output_dir,
         report_to="tensorboard",
         num_train_epochs=5,
-        per_device_train_batch_size=32,
+        per_device_train_batch_size=16,
     )
 
     #call trainer
