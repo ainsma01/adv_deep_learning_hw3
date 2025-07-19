@@ -1,5 +1,5 @@
 from .base_llm import BaseLLM
-from .sft import test_model, TokenizedDataset, format_example
+from .sft import test_model, TokenizedDataset
 from .data import Dataset, benchmark
 import torch
 from transformers import TrainingArguments, Trainer, DataCollatorForLanguageModeling
@@ -21,6 +21,17 @@ def load() -> BaseLLM:
 
     return llm
 
+def format_example(prompt: str, answer: str, summary: str) -> dict[str, str]:
+    """
+    Construct a question / answer pair. Consider rounding the answer to make it easier for the LLM.
+    """
+    answer_float = float(answer)
+    
+    return {
+        "question": prompt.strip(),
+        "answer": f"<answer>{round(answer_float, 2)}</answer>",
+        "summary": summary
+    }
 
 def train_model(
     output_dir: str,
