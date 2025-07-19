@@ -2,7 +2,45 @@ from .cot import CoTModel
 import json
 import re
 
-def generate_dataset(output_json: str, oversample: int = 10, temperature: float = 0.6):
+def generate_dataset(output_json: str, oversample: int = 10, temperature: float = 0.1, batch_size: int = 32):
+    from .data import Dataset
+    from more_itertools import chunked  # optional: pip install more-itertools
+
+    testset = Dataset("train")
+    print("Dataset size:", len(testset))
+
+    model = CoTModel(include_raw_response=True)
+    gen_data = []
+
+    # Chunk testset into batches
+    for batch_idx, batch in enumerate(chunked(testset, batch_size)):
+        print(f"\nProcessing batch {batch_idx + 1}...")
+
+        questions = [q for q, _ in batch]
+        gold_answers = [a for _, a in batch]
+
+        prompts = [model.format_prompt(q) for q in questions]
+        all_generations = model.batched_generate(prompts, num_return_sequences=oversample, temperature=temperature)
+
+        # all_generations is a list of lists: [ [sample1, sample2, ..., sampleN], ... ]
+        for i, generations in enumerate(all_generations):
+            found = False
+            for sample in generations:
+                parsed = model.parse_answer(sample)
+                if parsed == gold_answers[i]:
+                    block = extract_last_answer_block(sample)
+                    if block:
+                        gen_data.append((questions[i], gold_answers[i], block))
+                        found = True
+                        break  # Stop at first valid match
+            if not found:
+                # Optionally collect unmatched items for debugging
+                pass
+
+    with open(output_json + ".json", "w") as f:
+        json.dump(gen_data, f)
+
+def generate_dataset_single(output_json: str, oversample: int = 10, temperature: float = 0.6):
     from .data import Dataset, benchmark
 
     testset = Dataset("train")
