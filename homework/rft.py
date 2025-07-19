@@ -34,7 +34,7 @@ def format_example(prompt: str, answer: str, summary: str) -> dict[str, str]:
 
 def train_model(
     output_dir: str,
-    **kwargs,
+    epochs = 20,
 ):
     #base model
     base_llm = BaseLLM()
@@ -67,7 +67,7 @@ def train_model(
         output_dir=output_dir,
         logging_dir=output_dir,
         report_to="tensorboard",
-        num_train_epochs=20,
+        num_train_epochs=epochs,
         per_device_train_batch_size=32,
     )
 
