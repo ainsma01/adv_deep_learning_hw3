@@ -45,7 +45,7 @@ def train_model(
     model.print_trainable_parameters()
 
     # 3. Load dataset with reward fine-tuning format
-    dataset = Dataset("homework/rft_dataset.jsonl")
+    dataset = Dataset("rft")
     raw_data = dataset.examples  # [(question, correct_answer, reasoning_with_answer_tag), ...]
 
     # 4. Format for training: question -> CoT reasoning
