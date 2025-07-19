@@ -24,9 +24,7 @@ def load() -> BaseLLM:
 def format_example(prompt: str, answer: str, summary: str) -> dict[str, str]:
     """
     Construct a question / answer pair. Consider rounding the answer to make it easier for the LLM.
-    """
-    answer_float = float(answer)
-    
+    """    
     return {
         "question": prompt.strip(),
         "answer": summary.strip(),
@@ -54,6 +52,8 @@ def train_model(
 
     # 3. Load dataset with reward fine-tuning format
     dataset = Dataset("rft")
+
+    print("Dataset size:", len(dataset))
     
     # 4. Tokenize dataset
     tokenized_data = TokenizedDataset(base_llm.tokenizer, dataset, format_example)
