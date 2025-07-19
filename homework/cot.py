@@ -80,7 +80,7 @@ def test_model():
     for question,answer in testset:
 
         question_input = [model.format_prompt(question)]
-        generations = model.batched_generate(question_input)
+        generations = model.batched_generate(question_input, num_return_sequences=1, temperature=0.1)
         answer = model.parse_answer(generations[0])
 
         print("testing generate function")

@@ -7,13 +7,14 @@ def generate_dataset(output_json: str, oversample: int = 20, temperature: float 
 
     testset = Dataset("valid")
 
-    testset = testset[:3]
+    testset = testset[:5]
 
     model = CoTModel(include_raw_response=True)
     gen_data = []
 
     for question,answer in testset:
 
+        print("Question is:", question)
         question_input = [model.format_prompt(question)]
         generations = model.batched_generate(question_input, num_return_sequences=oversample, temperature= .1)
         print('Generations is:', generations[0])
