@@ -62,15 +62,22 @@ def train_model(
     from transformers import TrainingArguments
 
     training_args = TrainingArguments(
-        gradient_checkpointing=True,
-        learning_rate=5e-4,
         output_dir=output_dir,
         logging_dir=output_dir,
         report_to="tensorboard",
-        num_train_epochs=epochs,
-        per_device_train_batch_size=32,
+        gradient_checkpointing=True,
+        num_train_epochs=5,
+        per_device_train_batch_size=8,
+        gradient_accumulation_steps=4,
+        learning_rate=1e-4,
+        lr_scheduler_type="cosine",
+        warmup_steps=100,
+        weight_decay=0.01,
+        save_strategy="epoch",
+        logging_strategy="steps",
+        logging_steps=10,
+        evaluation_strategy="no",  # or "steps" if you add eval set
     )
-
     #call trainer
     from transformers import Trainer
 
