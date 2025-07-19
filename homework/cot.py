@@ -3,8 +3,8 @@ from .base_llm import BaseLLM
 
 class CoTModel(BaseLLM):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, checkpoint='HuggingFaceTB/SmolLM2-360M-Instruct'):
+        super().__init__(checkpoint=checkpoint)
 
     def format_prompt(self, question: str) -> str:
         """
