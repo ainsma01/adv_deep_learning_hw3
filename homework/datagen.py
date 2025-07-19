@@ -6,7 +6,7 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
 
     testset = Dataset("valid")
 
-    testset = testset[:5]
+    testset = testset[:3]
 
     model = CoTModel()
     gen_data = []

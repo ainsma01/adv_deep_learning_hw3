@@ -73,6 +73,8 @@ def test_model():
     testset = Dataset("valid")
     model = CoTModel()
 
+    testset = testset[:3]
+
     for question,answer in testset:
         print("testing answer function")
         print("input", question)
