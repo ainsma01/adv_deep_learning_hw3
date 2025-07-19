@@ -46,7 +46,6 @@ def train_model(
 
     # 3. Load dataset with reward fine-tuning format
     dataset = Dataset("rft")
-    raw_data = dataset.examples  # [(question, correct_answer, reasoning_with_answer_tag), ...]
 
     # 4. Format for training: question -> CoT reasoning
     def format_rft_example(example):
@@ -56,7 +55,7 @@ def train_model(
             "output": reasoning.strip(),
         }
 
-    formatted_data = list(map(format_rft_example, raw_data))
+    formatted_data = list(map(format_rft_example, dataset))
 
     # 5. Tokenize
     def tokenize(example):
