@@ -1,5 +1,5 @@
 from .base_llm import BaseLLM
-from .sft import test_model, TokenizedDataset
+from .sft import test_model, TokenizedDataset, format_example
 from .data import Dataset, benchmark
 import torch
 from transformers import TrainingArguments, Trainer, DataCollatorForLanguageModeling
@@ -46,44 +46,30 @@ def train_model(
 
     # 3. Load dataset with reward fine-tuning format
     dataset = Dataset("rft")
+    
+    # 4. Tokenize dataset
+    tokenized_data = TokenizedDataset(tokenizer, dataset, format_example)
 
-    # 4. Format for training: question -> CoT reasoning
-    def format_rft_example(example):
-        question, _, reasoning = example
-        return {
-            "input": question.strip(),
-            "output": reasoning.strip(),
-        }
+    #define training args
+    from transformers import TrainingArguments
 
-    formatted_data = list(map(format_rft_example, dataset))
+    training_args = TrainingArguments(
+        gradient_checkpointing=True,
+        learning_rate=5e-4,
+        output_dir=output_dir,
+        logging_dir=output_dir,
+        report_to="tensorboard",
+        num_train_epochs=5,
+        per_device_train_batch_size=16,
+    )
 
-    # 5. Tokenize
-    def tokenize(example):
-        prompt = f"{example['input'].strip()}\n"
-        target = f"{example['output'].strip()}"
-        full = tokenizer(prompt + target, padding="max_length", truncation=True, max_length=256)
-        full["labels"] = full["input_ids"].copy()
-        return full
+    #call trainer
+    from transformers import Trainer
 
-    tokenized = list(map(tokenize, formatted_data))
-    tokenized_dataset = TokenizedDataset(tokenized)
-
-    # 6. Trainer
     trainer = Trainer(
         model=model,
-        train_dataset=tokenized_dataset,
-        args=TrainingArguments(
-            output_dir=output_dir,
-            per_device_train_batch_size=4,
-            num_train_epochs=5,
-            logging_steps=1,
-            save_steps=250,
-            save_total_limit=1,
-            learning_rate=2e-4,
-            bf16=torch.cuda.is_bf16_supported(),
-            report_to=[],
-        ),
-        data_collator=DataCollatorForLanguageModeling(tokenizer, mlm=False),
+        args=training_args,
+        train_dataset=tokenized_data,
     )
 
     # 7. Train
