@@ -24,7 +24,6 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
         for sample in samples:
 
             #checking correctness of current sample
-            print("Current sample: ", sample)
             if model.parse_answer(sample) == answer:
                 
                 print("Found correct answer! its int he following sample: ", sample)

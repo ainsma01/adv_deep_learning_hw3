@@ -79,8 +79,10 @@ def test_model():
         question = model.format_prompt(question)
         print("testing answer function")
         print("input", question)
-        answer = model.batched_generate(question)
-        print("Raw output is:", answer)
+        raw_answer = model.batched_generate(question)
+        answer = model.parse_answer(raw_answer)
+        print("Raw output is:", raw_answer)
+        print("Answer is:", answer)
 
     # benchmark_result = benchmark(model, testset, 100)
     # print(f"{benchmark_result.accuracy=}  {benchmark_result.answer_rate=}")
