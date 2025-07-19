@@ -5,29 +5,25 @@ import re
 def generate_dataset(output_json: str, oversample: int = 20, temperature: float = 0.6):
     from .data import Dataset, benchmark
 
-    testset = Dataset("valid")
+    testset = Dataset("train")
 
-    testset = testset[:5]
+    #testset = testset[:5]
 
     model = CoTModel(include_raw_response=True)
     gen_data = []
 
     for question,answer in testset:
 
-        print("Question is:", question)
         question_input = [model.format_prompt(question)]
         generations = model.batched_generate(question_input, num_return_sequences=oversample, temperature= .1)
 
         for sample in generations:
             
             answer_response = model.parse_answer(sample[0])
-            print("Answer response is:", answer_response)
 
             if answer_response == answer:
 
-                print("Holy shit we did it")
                 last_block = extract_last_answer_block(sample[0])
-                print("Last block is:", last_block)
                 gen_data.append((question, answer, last_block))
                 continue
 
@@ -38,7 +34,6 @@ def generate_dataset(output_json: str, oversample: int = 20, temperature: float 
 
 
 
-    print("Generated dataet: ", gen_data)
     with open(output_json + ".json", "w") as f:
         json.dump(gen_data, f)
 
@@ -53,8 +48,6 @@ def extract_last_answer_block(text: str) -> str | None:
         return None
     
     last_answer_pos = answer_match[-1].start()
-
-    print("Current text", text)
 
     # Find all <|im_start|> ... <|im_end|> blocks with their positions
     block_matches = list(re.finditer(r"<\|im_start\|>assistant(.*?)<\|im_end\|>", text, flags=re.DOTALL))
