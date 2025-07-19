@@ -27,7 +27,9 @@ def generate_dataset(output_json: str, oversample: int = 20, temperature: float 
 
                 print("Holy shit we did it")
                 last_block = extract_last_answer_block(sample[0])
+                print("Last block is:", last_block)
                 gen_data.append((question, answer, last_block))
+                continue
 
 
 
@@ -51,6 +53,8 @@ def extract_last_answer_block(text: str) -> str | None:
         return None
     
     last_answer_pos = answer_match[-1].start()
+
+    print("Current text", text)
 
     # Find all <|im_start|> ... <|im_end|> blocks with their positions
     block_matches = list(re.finditer(r"<\|im_start\|>(.*?)<\|im_end\|>", text, flags=re.DOTALL))
