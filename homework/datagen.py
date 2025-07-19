@@ -16,7 +16,7 @@ def generate_dataset(output_json: str, oversample: int = 20, temperature: float 
 
         question_input = [model.format_prompt(question)]
         generations = model.batched_generate(question_input, num_return_sequences=oversample, temperature= .1)
-        print('Generations is:', generations)
+        print('Generations is:', generations[0])
         shit = [model.parse_answer(g) for g in generations]
         print('Shit is:', shit)
 
