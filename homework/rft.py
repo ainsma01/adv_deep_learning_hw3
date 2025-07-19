@@ -29,8 +29,7 @@ def format_example(prompt: str, answer: str, summary: str) -> dict[str, str]:
     
     return {
         "question": prompt.strip(),
-        "answer": f"<answer>{round(answer_float, 2)}</answer>",
-        "summary": summary
+        "answer": f"<answer>{round(answer_float, 2)}</answer>"
     }
 
 def train_model(
