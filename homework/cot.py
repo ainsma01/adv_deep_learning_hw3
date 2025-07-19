@@ -77,7 +77,17 @@ def test_model():
 
     testset = testset[:3]
 
-    # for question,answer in testset:
+    for question,answer in testset:
+
+        question_input = [model.self_format_prompt(question)]
+        generations = model.batched_generate(question_input)
+        answer = model.parse_answer(generations[0])
+
+        print("testing generate function")
+        print("input", question)
+        answer = model.parse_answer(generations[0])
+        print("output", answer)
+
         # formatted_question = model.format_prompt(question)
         # print("testing answer function")
         # print("input", formatted_question)
