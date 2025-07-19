@@ -4,11 +4,11 @@ import json
 def generate_dataset(output_json: str, oversample: int = 10, temperature: float = 0.6):
     from .data import Dataset, benchmark
 
-    testset = Dataset("train")
+    testset = Dataset("valid")
 
     testset = testset[:5]
 
-    model = CoTModel(checkpoint="HuggingFaceTB/SmolLM2-1.7B-Instruct")
+    model = CoTModel()
     gen_data = []
 
     for question,answer in testset:

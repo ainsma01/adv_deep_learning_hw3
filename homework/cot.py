@@ -72,8 +72,15 @@ def test_model():
 
     testset = Dataset("valid")
     model = CoTModel()
-    benchmark_result = benchmark(model, testset, 100)
-    print(f"{benchmark_result.accuracy=}  {benchmark_result.answer_rate=}")
+
+    for question,answer in testset:
+        print("testing answer function")
+        print("input", question)
+        answer = model.batched_generate(question)
+        print("Raw output is:", answer)
+
+    # benchmark_result = benchmark(model, testset, 100)
+    # print(f"{benchmark_result.accuracy=}  {benchmark_result.answer_rate=}")
     # testset = ["What does 2 liter equal in millilitre terms?"]
     # model = CoTModel()
     # for t in testset:
