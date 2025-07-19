@@ -39,3 +39,5 @@ htmlcov/
 nosetests.xml
 
 logs
+
+*.DS_STore
