@@ -88,6 +88,7 @@ def test_model():
 
         print("Now trying by just calling answer")
         answer_response = model.answer(question)
+        print("Answer is:", answer_response)
         print("Answer function response is:", answer_response[1])
         print("Raw output is:", answer_response[0])
 
