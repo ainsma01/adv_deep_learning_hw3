@@ -14,24 +14,18 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
 
     for question,answer in testset:
 
-        question = model.format_prompt(question)
-        print("Question: ", question)
-        print("Answer: ", answer)
+        question_input = [model.format_prompt(question)]
+        generations = model.batched_generate(question_input, oversample=oversample, temperature=temperature)
 
-        for i in range(oversample):
-            answer_response = model.answer(question)
-            print("Answer function response is:", answer_response[0][1])
-            print("Raw output is:", answer_response[0][0])
+        for sample in generations:
+            if model.parse_answer(sample) == answer and last_block is not None:
 
-            if answer_response[0][1] == answer:
-                print("Answer is correct!")
+                print("Holy shit we did it")
+                last_block = extract_last_answer_block(sample)
+                gen_data.append((question, answer, last_block))
 
-                answer_block = extract_last_answer_block(answer_response[0][0])
-
-                print("Answer block: ", answer_block)
-
-                gen_data.append(f'{question}, {answer_block}, {answer}')
-                continue
+       
+            
 
 
 
