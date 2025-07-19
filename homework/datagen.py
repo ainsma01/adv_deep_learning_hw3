@@ -37,8 +37,8 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
                 # Optionally collect unmatched items for debugging
                 pass
 
-    with open(output_json + ".json", "w") as f:
-        json.dump(gen_data, f)
+        with open(output_json + ".json", "w") as f:
+            json.dump(gen_data, f)
 
 def generate_dataset_single(output_json: str, oversample: int = 10, temperature: float = 0.6):
     from .data import Dataset, benchmark
