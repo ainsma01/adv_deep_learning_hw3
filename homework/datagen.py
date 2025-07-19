@@ -49,7 +49,7 @@ def generate_dataset_single(output_json: str, oversample: int = 10, temperature:
     print("Dataset size:", len(testset))
     #testset = testset[:5]
 
-    model = CoTModel(include_raw_response=True)
+    model = CoTModel(include_raw_response=True, checkpoint='HuggingFaceTB/SmolLM2-1.7B-Instruct')
     gen_data = []
 
     counter = 1
