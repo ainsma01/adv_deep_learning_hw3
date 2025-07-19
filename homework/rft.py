@@ -40,7 +40,7 @@ def train_model(
     base_llm = BaseLLM()
 
     #create LORA
-    rank = 8
+    rank = 16
     lora_config = LoraConfig(
         target_modules="all-linear",
         bias="none",
@@ -67,7 +67,7 @@ def train_model(
         output_dir=output_dir,
         logging_dir=output_dir,
         report_to="tensorboard",
-        num_train_epochs=5,
+        num_train_epochs=20,
         per_device_train_batch_size=16,
     )
 
