@@ -81,11 +81,10 @@ def test_model():
 
         question_input = [model.format_prompt(question)]
         generations = model.batched_generate(question_input, num_return_sequences=1, temperature=0.1)
-        answer = model.parse_answer(generations[0])
+        print("Question is:", question)
+        print("Generations is:", generations[0][0])
+        answer = model.parse_answer(generations[0][0])
 
-        print("testing generate function")
-        print("input", question)
-        answer = model.parse_answer(generations[0])
         print("output", answer)
 
         # formatted_question = model.format_prompt(question)

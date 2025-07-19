@@ -22,15 +22,15 @@ def generate_dataset(output_json: str, oversample: int = 20, temperature: float 
         print('Shit is:', shit)
 
         for sample in generations:
-
-            answer_response = model.parse_answer(sample)
+            
+            answer_response = model.parse_answer(sample[0])
             print("Answer response is:", answer_response)
             print("Answer is:", answer)
 
             if model.parse_answer(sample) == answer and last_block is not None:
 
                 print("Holy shit we did it")
-                last_block = extract_last_answer_block(sample)
+                last_block = extract_last_answer_block(sample[0])
                 gen_data.append((question, answer, last_block))
 
 
