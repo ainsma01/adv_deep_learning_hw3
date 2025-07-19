@@ -145,10 +145,10 @@ class BaseLLM:
         prompts = [self.format_prompt(q) for q in questions]
         generations = self.batched_generate(prompts)
 
-        if not self.include_raw_response:
-            return [self.parse_answer(g) for g in generations]
-
-        return [(g, self.parse_answer(g)) for g in generations]
+        if self.include_raw_response:
+            return [(g, self.parse_answer(g)) for g in generations]
+        
+        return [self.parse_answer(g) for g in generations]
 
 
 def test_model():

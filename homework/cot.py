@@ -73,6 +73,8 @@ def test_model():
     testset = Dataset("valid")
     model = CoTModel(include_raw_response=True)
 
+    print(model.include_raw_response)
+
     testset = testset[:3]
 
     for question,answer in testset:
@@ -85,9 +87,9 @@ def test_model():
         # print("Answer is:", answer)
 
         print("Now trying by just calling answer")
-        raw, answer_response = model.answer(question)
-        print("Answer function response is:", answer_response)
-        print("Raw output is:", raw)
+        answer_response = model.answer(question)
+        print("Answer function response is:", answer_response[1])
+        print("Raw output is:", answer_response[0])
 
     # benchmark_result = benchmark(model, testset, 100)
     # print(f"{benchmark_result.accuracy=}  {benchmark_result.answer_rate=}")
