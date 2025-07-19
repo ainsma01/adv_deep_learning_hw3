@@ -19,14 +19,11 @@ def generate_dataset(output_json: str, oversample: int = 20, temperature: float 
         generations = model.batched_generate(question_input, num_return_sequences=oversample, temperature= .1)
 
         for sample in generations:
-
-            print("Sample is:", sample)
             
             answer_response = model.parse_answer(sample[0])
             print("Answer response is:", answer_response)
-            print("Answer is:", answer)
 
-            if model.parse_answer(sample) == answer and last_block is not None:
+            if model.parse_answer(sample) == answer:
 
                 print("Holy shit we did it")
                 last_block = extract_last_answer_block(sample[0])
