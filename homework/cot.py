@@ -84,6 +84,10 @@ def test_model():
         print("Raw output is:", raw_answer)
         print("Answer is:", answer)
 
+        print("Now trying by just calling answer")
+        answer = model.answer(question)
+        print("Answer function response is:", answer)
+
     # benchmark_result = benchmark(model, testset, 100)
     # print(f"{benchmark_result.accuracy=}  {benchmark_result.answer_rate=}")
     # testset = ["What does 2 liter equal in millilitre terms?"]
