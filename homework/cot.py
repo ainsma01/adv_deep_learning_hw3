@@ -76,6 +76,7 @@ def test_model():
     testset = testset[:3]
 
     for question,answer in testset:
+        question = model.format_prompt(question)
         print("testing answer function")
         print("input", question)
         answer = model.batched_generate(question)
