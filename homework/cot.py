@@ -71,7 +71,7 @@ def test_model():
     from .data import Dataset, benchmark
 
     testset = Dataset("valid")
-    model = CoTModel(include_raw_response=True)
+    model = CoTModel()
 
     print(model.include_raw_response)
 
@@ -79,7 +79,7 @@ def test_model():
 
     for question,answer in testset:
 
-        question_input = [model.self_format_prompt(question)]
+        question_input = [model.format_prompt(question)]
         generations = model.batched_generate(question_input)
         answer = model.parse_answer(generations[0])
 
