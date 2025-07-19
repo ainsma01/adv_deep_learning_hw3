@@ -36,29 +36,27 @@ def train_model(
     output_dir: str,
     **kwargs,
 ):
-    # Reuse much of the SFT code here
     #base model
-    # 1. Load base model
-    llm = BaseLLM()
-    model = llm.model
-    tokenizer = llm.tokenizer
+    base_llm = BaseLLM()
 
-    # 2. Enable LoRA adapter
+    #create LORA
+    rank = 8
     lora_config = LoraConfig(
-        r=8,
-        lora_alpha=16,
-        lora_dropout=0.05,
+        target_modules="all-linear",
         bias="none",
         task_type="CAUSAL_LM",
+        r = rank,
+        lora_alpha = rank * 4
     )
-    model = get_peft_model(model, lora_config)
-    model.print_trainable_parameters()
+
+    lora_model = get_peft_model(base_llm.model, lora_config)
+    lora_model.enable_input_require_grads()
 
     # 3. Load dataset with reward fine-tuning format
     dataset = Dataset("rft")
     
     # 4. Tokenize dataset
-    tokenized_data = TokenizedDataset(tokenizer, dataset, format_example)
+    tokenized_data = TokenizedDataset(base_llm.tokenizer, dataset, format_example)
 
     #define training args
     from transformers import TrainingArguments
@@ -77,7 +75,7 @@ def train_model(
     from transformers import Trainer
 
     trainer = Trainer(
-        model=model,
+        model=lora_model,
         args=training_args,
         train_dataset=tokenized_data,
     )
@@ -86,7 +84,7 @@ def train_model(
     trainer.train()
 
     #save model
-    trainer.save_model("homework/sft_model")
+    trainer.save_model("homework/rft_model")
 
 
 if __name__ == "__main__":
