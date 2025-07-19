@@ -17,7 +17,7 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
 
     for question,answer in testset:
 
-        print("Processing item number:", 1)
+        print("Processing item number:", counter)
 
         question_input = [model.format_prompt(question)]
         generations = model.batched_generate(question_input, num_return_sequences=oversample, temperature= .1)
@@ -32,7 +32,7 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
                 gen_data.append((question, answer, last_block))
                 break  # break out of the loop once a correct answer is found
 
-            counter += 1
+        counter += 1
 
     with open(output_json + ".json", "w") as f:
         json.dump(gen_data, f)
