@@ -13,6 +13,9 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
 
     for question,answer in testset:
 
+        print("Question: ", question)
+        print("Answer: ", answer)
+
         #generating samples
         samples = model.batched_generate(question, num_return_sequences=oversample, temperature=temperature)
 
