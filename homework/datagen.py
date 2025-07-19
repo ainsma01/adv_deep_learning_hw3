@@ -15,7 +15,7 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
     for question,answer in testset:
 
         question_input = [model.format_prompt(question)]
-        generations = model.batched_generate(question_input, oversample=oversample, temperature=temperature)
+        generations = model.batched_generate(question_input, num_return_sequences=oversample, temperature=temperature)
 
         for sample in generations:
             if model.parse_answer(sample) == answer and last_block is not None:
