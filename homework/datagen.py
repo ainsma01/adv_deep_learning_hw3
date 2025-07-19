@@ -19,7 +19,7 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
         print("Answer: ", answer)
 
         for i in range(oversample):
-            answer_response = model.answer(question, temperature=temperature)
+            answer_response = model.answer(question)
             print("Answer function response is:", answer_response[0][1])
             print("Raw output is:", answer_response[0][0])
 
