@@ -2,17 +2,22 @@ from .cot import CoTModel
 import json
 import re
 
-def generate_dataset(output_json: str, oversample: int = 20, temperature: float = 0.6):
+def generate_dataset(output_json: str, oversample: int = 10, temperature: float = 0.6):
     from .data import Dataset, benchmark
 
     testset = Dataset("train")
 
+    print("Dataset size:", len(testset))
     #testset = testset[:5]
 
     model = CoTModel(include_raw_response=True)
     gen_data = []
 
+    counter = 1
+
     for question,answer in testset:
+
+        print("Processing item number:", 1)
 
         question_input = [model.format_prompt(question)]
         generations = model.batched_generate(question_input, num_return_sequences=oversample, temperature= .1)
@@ -25,14 +30,9 @@ def generate_dataset(output_json: str, oversample: int = 20, temperature: float 
 
                 last_block = extract_last_answer_block(sample[0])
                 gen_data.append((question, answer, last_block))
-                continue
+                break  # break out of the loop once a correct answer is found
 
-
-
-       
-            
-
-
+            counter += 1
 
     with open(output_json + ".json", "w") as f:
         json.dump(gen_data, f)
