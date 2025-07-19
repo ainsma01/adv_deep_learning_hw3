@@ -29,10 +29,9 @@ class BaseLLM:
         This function is somewhat robust to output errors (e.g. missing </answer> tags).
         """
         try:
-            print("LLM answer:", answer)
             matches = re.findall(r"<answer>(.*?)</answer>", answer)
             return float(matches[-1].strip())
-        except (IndexError, ValueError):
+        except Exception:
             return float("nan")
 
     def generate(self, prompt: str) -> str:
