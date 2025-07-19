@@ -77,7 +77,7 @@ def test_model():
 
     testset = testset[:3]
 
-    for question,answer in testset:
+    # for question,answer in testset:
         # formatted_question = model.format_prompt(question)
         # print("testing answer function")
         # print("input", formatted_question)
@@ -86,11 +86,11 @@ def test_model():
         # print("Raw output is:", raw_answer)
         # print("Answer is:", answer)
 
-        print("Now trying by just calling answer")
-        answer_response = model.answer(question)
-        print("Answer is:", answer_response)
-        print("Answer function response is:", answer_response[1])
-        print("Raw output is:", answer_response[0])
+        # print("Now trying by just calling answer")
+        # answer_response = model.answer(question)
+        # print("Answer is:", answer_response)
+        # print("Answer function response is:", answer_response[0][0])
+        # print("Raw output is:", answer_response[0][1])
 
     # benchmark_result = benchmark(model, testset, 100)
     # print(f"{benchmark_result.accuracy=}  {benchmark_result.answer_rate=}")

@@ -18,23 +18,23 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
         print("Question: ", question)
         print("Answer: ", answer)
 
-        #generating samples
-        samples = model.batched_generate(question, num_return_sequences=oversample, temperature=temperature)
+        for i in range(oversample):
+            answer_response = model.answer(question, temperature=temperature)
+            print("Answer is:", answer_response)
+            print("Answer function response is:", answer_response[0][0])
+            print("Raw output is:", answer_response[0][1])
 
-        for sample in samples:
+            if answer_response[0][0] == answer:
+                print("Answer is correct!")
 
-            #checking correctness of current sample
-            if model.parse_answer(sample) == answer:
-                
-                print("Found correct answer! its int he following sample: ", sample)
+                answer_block = extract_last_answer_block(answer_response[0][1])
 
-                #extracting the last answer block
-                answer_block = extract_last_answer_block(sample)
                 print("Answer block: ", answer_block)
 
-                #found correct answer appending it to the dataset
-                gen_data.append(f'{question}, {answer_block}, {sample}')
+                gen_data.append(f'{question}, {answer_block}, {answer}')
                 continue
+
+
 
     print("Generated dataet: ", gen_data)
     with open(output_json + ".json", "w") as f:
