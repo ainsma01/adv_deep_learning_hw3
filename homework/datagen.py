@@ -12,13 +12,21 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
     gen_data = []
 
     for question,answer in testset:
+
+        #generating samples
         samples = model.batched_generate(question, num_return_sequences=oversample, temperature=temperature)
 
         for sample in samples:
+
+            #checking correctness of current sample
+            print("Current sample: ", sample)
             if model.parse_answer(sample) == answer:
+
+                #found correct answer appending it to the dataset
                 gen_data.append(f'{question}, {answer}, {sample}')
                 continue
-    open(output_json + ".json", "w")
+
+    print("Generated dataet: ", gen_data)
     with open(output_json + ".json", "w") as f:
         json.dump(gen_data, f)
 
