@@ -57,12 +57,12 @@ def extract_last_answer_block(text: str) -> str | None:
     print("Current text", text)
 
     # Find all <|im_start|> ... <|im_end|> blocks with their positions
-    block_matches = list(re.finditer(r"<\|im_start\|>(.*?)<\|im_end\|>", text, flags=re.DOTALL))
+    block_matches = list(re.finditer(r"<\|im_start\|>assistant(.*?)<\|im_end\|>", text, flags=re.DOTALL))
 
     # Find the block that contains the last answer
     for match in reversed(block_matches):  # reverse to find the latest block containing the answer
         if match.start() <= last_answer_pos <= match.end():
-            return match.group(0).strip()
+            return match.group(1).strip()
 
     return None
 
