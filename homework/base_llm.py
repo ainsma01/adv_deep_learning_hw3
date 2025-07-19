@@ -29,7 +29,6 @@ class BaseLLM:
         Parse the <answer></answer> tag and return a float.
         This function is somewhat robust to output errors (e.g. missing </answer> tags).
         """
-        print("LLM output:", answer)
         try:
             matches = re.findall(r"<answer>(.*?)</answer>", answer)
             return float(matches[-1].strip())
