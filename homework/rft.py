@@ -67,7 +67,7 @@ def train_model(
         output_dir=output_dir,
         logging_dir=output_dir,
         report_to="tensorboard",
-        num_train_epochs=100,
+        num_train_epochs=20,
         per_device_train_batch_size=32,
     )
 
