@@ -23,7 +23,7 @@ def generate_dataset(output_json: str, oversample: int = 20, temperature: float 
             answer_response = model.parse_answer(sample[0])
             print("Answer response is:", answer_response)
 
-            if model.parse_answer(sample) == answer:
+            if answer_response == answer:
 
                 print("Holy shit we did it")
                 last_block = extract_last_answer_block(sample[0])
