@@ -13,6 +13,7 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
 
     for question,answer in testset:
 
+        question = model.format_prompt(question)
         print("Question: ", question)
         print("Answer: ", answer)
 
