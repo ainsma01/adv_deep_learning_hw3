@@ -9,7 +9,7 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
 
     testset = testset[:3]
 
-    model = CoTModel()
+    model = CoTModel(include_raw_response=True)
     gen_data = []
 
     for question,answer in testset:

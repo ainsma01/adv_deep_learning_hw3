@@ -3,8 +3,8 @@ from .base_llm import BaseLLM
 
 class CoTModel(BaseLLM):
 
-    def __init__(self, checkpoint='HuggingFaceTB/SmolLM2-360M-Instruct'):
-        super().__init__(checkpoint=checkpoint)
+    def __init__(self, checkpoint='HuggingFaceTB/SmolLM2-360M-Instruct', include_raw_response=False):
+        super().__init__(checkpoint=checkpoint, include_raw_response=include_raw_response)
 
     def format_prompt(self, question: str) -> str:
         """
@@ -71,22 +71,23 @@ def test_model():
     from .data import Dataset, benchmark
 
     testset = Dataset("valid")
-    model = CoTModel()
+    model = CoTModel(include_raw_response=True)
 
     testset = testset[:3]
 
     for question,answer in testset:
-        formatted_question = model.format_prompt(question)
-        print("testing answer function")
-        print("input", formatted_question)
-        raw_answer = model.batched_generate(formatted_question)
-        answer = model.parse_answer(raw_answer)
-        print("Raw output is:", raw_answer)
-        print("Answer is:", answer)
+        # formatted_question = model.format_prompt(question)
+        # print("testing answer function")
+        # print("input", formatted_question)
+        # raw_answer = model.batched_generate(formatted_question)
+        # answer = model.parse_answer(raw_answer)
+        # print("Raw output is:", raw_answer)
+        # print("Answer is:", answer)
 
         print("Now trying by just calling answer")
-        answer_response = model.answer(question)
+        raw, answer_response = model.answer(question)
         print("Answer function response is:", answer_response)
+        print("Raw output is:", raw)
 
     # benchmark_result = benchmark(model, testset, 100)
     # print(f"{benchmark_result.accuracy=}  {benchmark_result.answer_rate=}")

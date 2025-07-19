@@ -10,10 +10,11 @@ device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is
 
 
 class BaseLLM:
-    def __init__(self, checkpoint=checkpoint):
+    def __init__(self, checkpoint=checkpoint, include_raw_response=False):
         self.tokenizer = AutoTokenizer.from_pretrained(checkpoint)
         self.model = AutoModelForCausalLM.from_pretrained(checkpoint).to(device)
         self.device = device
+        self.include_raw_response = include_raw_response
 
     def format_prompt(self, question: str) -> str:
         """
@@ -143,7 +144,11 @@ class BaseLLM:
         # Convert each question
         prompts = [self.format_prompt(q) for q in questions]
         generations = self.batched_generate(prompts)
-        return [self.parse_answer(g) for g in generations]
+
+        if not self.include_raw_response:
+            return [self.parse_answer(g) for g in generations]
+
+        return [(g, self.parse_answer(g)) for g in generations]
 
 
 def test_model():
