@@ -2,6 +2,7 @@ from .cot import CoTModel
 import json
 import re
 from .data import is_answer_valid
+#used help from copilot
 
 def generate_dataset(output_json: str, oversample: int = 10, temperature: float = 0.2, batch_size: int = 16):
     from .data import Dataset
