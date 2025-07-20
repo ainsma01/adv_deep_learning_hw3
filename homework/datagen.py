@@ -1,8 +1,9 @@
 from .cot import CoTModel
 import json
 import re
+from .data import is_answer_valid
 
-def generate_dataset(output_json: str, oversample: int = 10, temperature: float = 0.6, batch_size: int = 16):
+def generate_dataset(output_json: str, oversample: int = 15, temperature: float = 0.6, batch_size: int = 16):
     from .data import Dataset
     from more_itertools import chunked  # optional: pip install more-itertools
 
@@ -27,7 +28,7 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
             found = False
             for sample in generations:
                 parsed = model.parse_answer(sample)
-                if parsed == gold_answers[i]:
+                if is_answer_valid(parsed, gold_answers[i]):
                     block = extract_last_answer_block(sample)
                     if block:
                         gen_data.append((questions[i], gold_answers[i], block))
