@@ -16,19 +16,18 @@ class CoTModel(BaseLLM):
             {
                 "role": "system",
                 "content": (
-                    "You are a helpful assistant that performs unit conversions. "
-                    "Always wrap the final numeric result in <answer> tags. "
-                    "Explain your reasoning briefly, then provide the final value like this: <answer>VALUE</answer>. "
-                    "Do not include anything after the closing </answer>."
+                    "You are a unit conversion assistant. For each question, respond with:\n"
+                    "1. A short explanation\n"
+                    "2. The final number inside <answer> tags — nothing else after it."
                 )
             },
             {
                 "role": "user",
-                "content": "How many seconds are in 2.5 minutes?"
+                "content": "Convert 3 hours into minutes"
             },
             {
                 "role": "assistant",
-                "content": "There are 60 seconds in a minute. 2.5 times 60 is <answer>150</answer>"
+                "content": "1 hour = 60 minutes. 3 × 60 = <answer>180</answer>"
             },
             {
                 "role": "user",
