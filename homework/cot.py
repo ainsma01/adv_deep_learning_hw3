@@ -13,71 +13,28 @@ class CoTModel(BaseLLM):
         """
 
         messages = [
-                {
-                    "role": "system",
-                    "content": (
-                        "You are an expert in unit conversions. For each question, provide a concise response that includes: "
-                        "1. A brief summary of the conversion requested. "
-                        "2. A clear, step-by-step explanation of the conversion process. "
-                        "3. The final numerical answer wrapped in <answer>NUMBER</answer> tags, with no units or additional text after the tag. "
-                        "Use standard conversion factors (e.g., 1 yard = 3 feet, 1 minute = 60 seconds, 1 metric ton = 1000 kilograms, 1 megabyte = 1000 kilobytes, 1 US ton = 2000 pounds). "
-                        "If the unit is ambiguous (e.g., 'ton'), assume US ton unless specified as 'metric ton'. "
-                        "If the question is invalid or unclear, respond with an explanation and <answer>0</answer>."
-                    )
-                },
-                {
-                    "role": "user",
-                    "content": "Convert 2 yards to feet."
-                },
-                {
-                    "role": "assistant",
-                    "content": "The question asks for 2 yards to be converted to feet. There are 3 feet in a yard. 2 times 3 is <answer>6</answer>"
-                },
-                {
-                    "role": "user",
-                    "content": "How many seconds are there in 3 minutes?"
-                },
-                {
-                    "role": "assistant",
-                    "content": "The question asks for 3 minutes to be converted to seconds. There are 60 seconds in a minute. 3 times 60 is <answer>180</answer>"
-                },
-                {
-                    "role": "user",
-                    "content": "Convert 5 kilograms to grams."
-                },
-                {
-                    "role": "assistant",
-                    "content": "The question asks for 5 kilograms to be converted to grams. There are 1000 grams in a kilogram. 5 times 1000 is <answer>5000</answer>"
-                },
-                {
-                    "role": "user",
-                    "content": "How many megabytes are in 4 gigabytes?"
-                },
-                {
-                    "role": "assistant",
-                    "content": "The question asks for 4 gigabytes to be converted to megabytes. There are 1000 megabytes in a gigabyte. 4 times 1000 is <answer>4000</answer>"
-                },
-                {
-                    "role": "user",
-                    "content": "Convert 6 pounds to ounces."
-                },
-                {
-                    "role": "assistant",
-                    "content": "The question asks for 6 pounds to be converted to ounces. There are 16 ounces in a pound. 6 times 16 is <answer>96</answer>"
-                },
-                {
-                    "role": "user",
-                    "content": "What is 3 tons in pounds?"
-                },
-                {
-                    "role": "assistant",
-                    "content": "The question asks for 3 tons to be converted to pounds. Assuming US tons, there are 2000 pounds in a ton. 3 times 2000 is <answer>6000</answer>"
-                },
-                {
-                    "role": "user",
-                    "content": question
-                }
-            ]
+            {
+                "role": "system",
+                "content": (
+                    "You are a helpful assistant that performs unit conversions. "
+                    "Always wrap the final numeric result in <answer> tags. "
+                    "Explain your reasoning briefly, then provide the final value like this: <answer>VALUE</answer>. "
+                    "Do not include anything after the closing </answer>."
+                )
+            },
+            {
+                "role": "user",
+                "content": "How many seconds are in 2.5 minutes?"
+            },
+            {
+                "role": "assistant",
+                "content": "There are 60 seconds in a minute. 2.5 times 60 is <answer>150</answer>"
+            },
+            {
+                "role": "user",
+                "content": question
+            }
+        ]
 
 
 
