@@ -16,9 +16,11 @@ class CoTModel(BaseLLM):
             {
                 "role": "system",
                 "content": (
-                    "You are a precise unit converter. For each question, explain the conversion briefly, "
-                    "then wrap the final numeric result in <answer> tags. "
-                    "Do not include any text after the closing </answer> tag."
+                    "You are a calculator that answers unit conversion questions. "
+                    "Give a short explanation and then compute the result. "
+                    "Always write your final answer like this:\n"
+                    "<answer>NUMBER</answer>\n"
+                    "Never include any text after </answer>. Just return the number."
                 )
             },
             {
@@ -27,31 +29,49 @@ class CoTModel(BaseLLM):
             },
             {
                 "role": "assistant",
-                "content": "1 kilobyte is 1024 bytes, and 1 byte is 8 bits. 2 × 1024 × 8 = <answer>16384</answer>"
+                "content": (
+                    "1 kilobyte = 1024 bytes, and 1 byte = 8 bits. Equation: 2 × 1024 × 8 = <answer>16384</answer>"
+                )
             },
             {
                 "role": "user",
-                "content": "Convert 3 kilograms to grams."
+                "content": "Convert 3 kilograms to pounds."
             },
             {
                 "role": "assistant",
-                "content": "1 kilogram is 1000 grams. 3 × 1000 = <answer>3000</answer>"
+                "content": (
+                    "1 kilogram = 2.20462 pounds. Equation: 3 × 2.20462 = <answer>6.61386</answer>"
+                )
             },
             {
                 "role": "user",
-                "content": "What is the conversion from 5 gallons to fluid ounces?"
+                "content": "How many weeks are in 4 years?"
             },
             {
                 "role": "assistant",
-                "content": "1 gallon is 128 fluid ounces. 5 × 128 = <answer>640</answer>"
+                "content": (
+                    "1 year = 365.25 days, and 1 week = 7 days. Equation: (4 × 365.25) ÷ 7 = <answer>208.709827875</answer>"
+                )
             },
             {
                 "role": "user",
-                "content": "Please convert 3 miles per hour to meters per second."
+                "content": "Convert 5 gallons to fluid ounces."
             },
             {
                 "role": "assistant",
-                "content": "1 mi/h is about 0.44704 m/s. 3 × 0.44704 = <answer>1.34112</answer>"
+                "content": (
+                    "1 gallon = 128 fluid ounces. Equation: 5 × 128 = <answer>640</answer>"
+                )
+            },
+            {
+                "role": "user",
+                "content": "Convert 3 miles per hour to meters per second."
+            },
+            {
+                "role": "assistant",
+                "content": (
+                    "1 mi/h = 0.44704 m/s. Equation: 3 × 0.44704 = <answer>1.34112</answer>"
+                )
             },
             {
                 "role": "user",
