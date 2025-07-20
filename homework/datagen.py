@@ -2,7 +2,7 @@ from .cot import CoTModel
 import json
 import re
 
-def generate_dataset(output_json: str, oversample: int = 10, temperature: float = 0.1, batch_size: int = 32):
+def generate_dataset(output_json: str, oversample: int = 10, temperature: float = 0.6, batch_size: int = 16):
     from .data import Dataset
     from more_itertools import chunked  # optional: pip install more-itertools
 
