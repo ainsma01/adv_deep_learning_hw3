@@ -27,7 +27,7 @@ class CoTModel(BaseLLM):
             },
             {
                 "role": "assistant",
-                "content": "1 hour = 60 minutes. 3 × 60 = <answer>180</answer>"
+                "content": "1 hour = 60 minutes. 3 times 60 = <answer>180</answer>"
             },
             {
                 "role": "user",
