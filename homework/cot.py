@@ -16,18 +16,42 @@ class CoTModel(BaseLLM):
             {
                 "role": "system",
                 "content": (
-                    "You are a unit conversion assistant. For each question, respond with:\n"
-                    "1. A short explanation\n"
-                    "2. The final number inside <answer> tags — nothing else after it."
+                    "You are a precise unit converter. For each question, explain the conversion briefly, "
+                    "then wrap the final numeric result in <answer> tags. "
+                    "Do not include any text after the closing </answer> tag."
                 )
             },
             {
                 "role": "user",
-                "content": "Convert 3 hours into minutes"
+                "content": "How many bits are in 2 kilobytes?"
             },
             {
                 "role": "assistant",
-                "content": "1 hour = 60 minutes. 3 times 60 = <answer>180</answer>"
+                "content": "1 kilobyte is 1024 bytes, and 1 byte is 8 bits. 2 × 1024 × 8 = <answer>16384</answer>"
+            },
+            {
+                "role": "user",
+                "content": "Convert 3 kilograms to grams."
+            },
+            {
+                "role": "assistant",
+                "content": "1 kilogram is 1000 grams. 3 × 1000 = <answer>3000</answer>"
+            },
+            {
+                "role": "user",
+                "content": "What is the conversion from 5 gallons to fluid ounces?"
+            },
+            {
+                "role": "assistant",
+                "content": "1 gallon is 128 fluid ounces. 5 × 128 = <answer>640</answer>"
+            },
+            {
+                "role": "user",
+                "content": "Please convert 3 miles per hour to meters per second."
+            },
+            {
+                "role": "assistant",
+                "content": "1 mi/h is about 0.44704 m/s. 3 × 0.44704 = <answer>1.34112</answer>"
             },
             {
                 "role": "user",
