@@ -3,7 +3,7 @@ import json
 import re
 from .data import is_answer_valid
 
-def generate_dataset(output_json: str, oversample: int = 10, temperature: float = 0.6, batch_size: int = 16):
+def generate_dataset(output_json: str, oversample: int = 15, temperature: float = 0.2, batch_size: int = 16):
     from .data import Dataset
     from more_itertools import chunked  # optional: pip install more-itertools
 
@@ -50,7 +50,7 @@ def generate_dataset_single(output_json: str, oversample: int = 10, temperature:
     print("Dataset size:", len(testset))
     #testset = testset[:5]
 
-    model = CoTModel(include_raw_response=True, checkpoint='HuggingFaceTB/SmolLM2-1.7B-Instruct')
+    model = CoTModel(include_raw_response=True)
     gen_data = []
 
     counter = 1
